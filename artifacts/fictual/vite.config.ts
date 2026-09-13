@@ -3,38 +3,25 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
-import runtimeErrorOverlay from '@replit/vite-plugin-runtime-error-modal';
+const isReplit = process.env.REPL_ID !== undefined;
+const isProd = process.env.NODE_ENV === 'production';
 
-const rawPort = process.env.PORT;
+// Provide sensible defaults so CI / GitHub Actions doesn't crash
+const port = Number(process.env.PORT || 3000);
+const basePath = process.env.BASE_PATH || '/Fictual-Headcanon-Hub/';
 
-if (!rawPort) {
-  throw new Error(
-    'PORT environment variable is required but was not provided.',
-  );
-}
-
-const port = Number(rawPort);
-
-if (Number.isNaN(port) || port <= 0) {
-  throw new Error(`Invalid PORT value: "${rawPort}"`);
-}
-
-const basePath = process.env.BASE_PATH;
-
-if (!basePath) {
-  throw new Error(
-    'BASE_PATH environment variable is required but was not provided.',
-  );
-}
-
-export default defineConfig({
+export default defineConfig(async () => ({
   base: basePath,
   plugins: [
     react(),
     tailwindcss(),
-    runtimeErrorOverlay(),
-    ...(process.env.NODE_ENV !== 'production' &&
-    process.env.REPL_ID !== undefined
+    // Only load the Replit error overlay outside production
+    ...(isProd
+      ? []
+      : [
+          (await import('@replit/vite-plugin-runtime-error-modal')).default(),
+        ]),
+    ...(!isProd && isReplit
       ? [
           await import('@replit/vite-plugin-cartographer').then((m) =>
             m.cartographer({
@@ -69,13 +56,11 @@ export default defineConfig({
     strictPort: true,
     host: '0.0.0.0',
     allowedHosts: true,
-    fs: {
-      strict: true,
-    },
+    fs: { strict: true },
   },
   preview: {
     port,
     host: '0.0.0.0',
     allowedHosts: true,
   },
-});
+}));
