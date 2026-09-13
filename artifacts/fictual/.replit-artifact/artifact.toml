@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Fictual"
+description = "A growing hub of free creative tools for fanfiction writers, original character creators, and roleplayers, launching with a local headcanon generator and shareable PNG cards."
+version = "1.0.0"
+id = "artifacts/fictual"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20030
+
+[services.development]
+run = "pnpm --filter @workspace/fictual run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/fictual", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/fictual/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20030"
+BASE_PATH = "/"

@@ -1,0 +1,74 @@
+Build a web app called "Fictual" — a growing hub of free tools for
+fanfiction writers, OC creators, and roleplayers. Launch with ONE tool
+(a character headcanon generator), but structure the whole site so more
+tools can be added later without a redesign.
+
+REFERENCE SITES (for feature/UX inspiration only — do NOT copy their
+layout, wording, design, or code; use them only to understand what a
+good headcanon generator does):
+- https://www.ocidol.com/tools/oc-headcanon-generator
+- https://headcanongenerators.com/
+
+SITE ARCHITECTURE (build this shape even though there's only 1 tool at launch)
+- Homepage acts as a lightweight tool directory: hero section introducing
+  Fictual as a hub for writers/roleplayers, then a "Tools" grid showing
+  the headcanon generator as the first card (styled so it's obvious more
+  cards will slot in later)
+- Nav bar has a "Tools" dropdown/link, not just a logo pointing at the
+  generator directly
+- URL pattern: tools live at /tools/headcanon-generator, /tools/[fandom]-
+  headcanon-generator, etc. — NOT at the site root, so the root can stay
+  a general homepage as more tools are added
+- Shared header, footer, and ad-slot components used across all tool
+  pages, so adding a new tool later means adding a new page, not
+  reworking the layout
+- Consistent design system (colors, fonts, button/card styles) defined
+  once (e.g. shared CSS variables or a theme file) so new tools
+  automatically match the site's look
+
+TOOL #1: HEADCANON GENERATOR
+A button-triggered generator that outputs 5 short, specific headcanons
+per click (concrete habits/quirks/history — e.g. "always double-checks
+locked doors" — not vague traits like "is cautious"). Categories:
+Personality, Backstory, Quirks, Relationships, Secrets. User can
+lock/favorite individual results and reroll only the rest. No login
+required. No AI API — use a hand-written local template bank (250-300
+templates across the 5 categories at launch) with randomized slot-
+filling, so there's zero ongoing API cost.
+
+UNIQUE DIFFERENTIATOR
+Add a "Save as Card" feature: once a user has headcanons they like,
+render them onto a clean, shareable graphic card (canvas-based,
+portrait aspect ratio suited to Instagram/TikTok/Twitter) with the
+character name, the headcanons, and small Fictual branding in the
+corner, downloadable as a PNG. Treat this as the tool's signature
+feature — the reference sites don't offer it.
+
+SEO STRUCTURE
+- One example fandom-specific page at /tools/genshin-impact-headcanon-
+  generator using the same generator logic with themed flavor text, to
+  prove out the URL pattern before more fandom pages get added
+- On every tool page: "How it works" section, FAQ section with FAQ
+  schema markup (cover things like "what is a headcanon" and the common
+  misspelling "headcannon generator"), and a "More tools" block that
+  will list sibling tools once they exist
+- Proper title tags, meta descriptions, and H1/H2 structure targeting
+  "headcanon generator" and "[fandom] headcanon generator"
+
+TECH STACK
+Plain HTML/CSS/JS or lightweight React, fully static/client-side (no
+database, no backend for MVP — localStorage only for saved/favorited
+headcanons). Fast, minimal JS payload, mobile-responsive.
+
+MONETIZATION
+Reserve clearly separated ad slots (below the generator, between content
+sections) sized for Google AdSense standard units. Never overlap ads
+with the generator button or card-export button, and avoid any layout
+that could be flagged as accidental-click-inducing.
+
+DELIVERABLE
+A working generator with a real template bank (not placeholder data),
+the image-export feature working end-to-end, one fandom example page
+live, the homepage tool-directory shell in place (even with just one
+tool card), and clean semantic HTML ready to submit to Google Search
+Console on day one.
