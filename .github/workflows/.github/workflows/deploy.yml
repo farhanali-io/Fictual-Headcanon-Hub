@@ -39,7 +39,7 @@ jobs:
         env:
           NODE_ENV: production
           PORT: 3000
-          BASE_PATH: /Fictual-Headcanon-Hub-/
+          BASE_PATH: /Fictual-Headcanon-Hub/
         run: pnpm --filter ./artifacts/fictual run build
 
       - name: Add .nojekyll
